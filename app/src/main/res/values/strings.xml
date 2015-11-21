@@ -10,6 +10,18 @@
     <string name="pref_name_autostart">Autostart on boot</string>
     <string name="pref_desc_autostart">Autostart app on system boot</string>
 
+    <string name="pref_name_fullscreen">Полноэкранный режим</string>
+    <string-array name="pref_fullscreen_titles">
+        <item>Отключить</item>
+        <item>Скрыть строку уведомлений</item>
+        <item>Скрыть строку уведомлений и навигационную панель</item>
+    </string-array>
+    <string-array name="pref_fullscreen_values" translatable="false">
+        <item>disable</item>
+        <item>hide_title_bar</item>
+        <item>hide_navigation_bar</item>
+    </string-array>
+
     <string name="pref_title_display_name">Display name</string>
     <string name="pref_default_display_name">John Smith</string>
 

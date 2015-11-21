@@ -18,7 +18,6 @@ import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
 
 import java.util.List;
 
@@ -27,19 +26,6 @@ public class SettingsActivity extends PreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
-//    @Override
-//    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == android.R.id.home) {
-//            if (!super.onMenuItemSelected(featureId, item)) {
-//                NavUtils.navigateUpFromSameTask(this);
-//            }
-//            return true;
-//        }
-//        return super.onMenuItemSelected(featureId, item);
-//    }
-
 
     @Override
     public boolean onIsMultiPane() {
@@ -121,6 +107,7 @@ public class SettingsActivity extends PreferenceActivity {
             setHasOptionsMenu(true);
 
             bindPreferenceSummaryToValue(findPreference("example_text"));
+            bindPreferenceSummaryToValue(findPreference("fullscreen"));
             bindPreferenceSummaryToValue(findPreference("ps_position"));
         }
 
