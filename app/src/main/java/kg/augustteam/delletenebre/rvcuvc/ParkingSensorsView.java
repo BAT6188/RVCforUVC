@@ -18,10 +18,9 @@ import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-/**
- * Created by delle on 19.11.15.
- */
 public class ParkingSensorsView extends View {
+
+    private APP mAPP;
 
     private SharedPreferences _settings;
 
@@ -58,6 +57,8 @@ public class ParkingSensorsView extends View {
     }
 
     private void init() {
+        mAPP = APP.getInstance();
+        mAPP.setParkingSensorsView(this);
         _settings = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         emptyColor = Color.parseColor("#80ffffff");
@@ -71,6 +72,22 @@ public class ParkingSensorsView extends View {
 
         rearSensorsData = stringToIntArray(rearInputString);
         frontSensorsData = stringToIntArray(frontInputString);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mAPP.setParkingSensorsView(null);
+    }
+
+    public void setSensorsData(String type, String data){
+        if ( type.equals("rear") ) {
+            rearSensorsData = stringToIntArray(rearInputString);
+        } else if ( type.equals("front") ) {
+            rearSensorsData = stringToIntArray(frontInputString);
+        }
+
+        invalidate();
     }
 
     public void setCarSize(int width, int height) {

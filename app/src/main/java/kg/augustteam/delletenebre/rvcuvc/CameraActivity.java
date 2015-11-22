@@ -29,7 +29,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class CameraActivity extends Activity {
-    private static final String TAG = "*************";
+    private final String TAG = getClass().getName();
+    private APP mAPP;
 
     private SharedPreferences _settings;
     private FrameLayout mMainLayout;
@@ -63,10 +64,13 @@ public class CameraActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        _settings = PreferenceManager.getDefaultSharedPreferences(this);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+
+        mAPP = APP.getInstance();
+        mAPP.setCameraActivity(this);
+
+        _settings = PreferenceManager.getDefaultSharedPreferences(this);
 
         mUVCCameraView = (UVCCameraView)findViewById(R.id.UVCCameraView);
         mUVCCameraView.setAspectRatio(
@@ -205,6 +209,8 @@ public class CameraActivity extends Activity {
             mUSBMonitor = null;
         }
         mUVCCameraView = null;
+
+        mAPP.setCameraActivity(null);
 
         super.onDestroy();
     }
