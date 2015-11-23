@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Surface;
@@ -88,15 +89,9 @@ public class CameraActivity extends Activity {
         layoutParkingSensors = (RelativeLayout) findViewById(R.id.parking_sensors_layout);
         parkingSensorsView = (ParkingSensorsView) findViewById(R.id.parkingSensors);
         carImageView = (ImageView) findViewById(R.id.carView);
-        carImageView.post(new Runnable() {
-            @Override
-            public void run() {
-                parkingSensorsView.setCarSize(carImageView.getMeasuredWidth(),
-                        carImageView.getMeasuredHeight());
-            }
-        });
 
-
+        mAPP.setFrontTextView((TextView) findViewById(R.id.frontTextView));
+        mAPP.setRearTextView((TextView) findViewById(R.id.rearTextView));
 
         mUSBMonitor = new USBMonitor(this, mOnDeviceConnectListener);
         mUSBMonitor.register();
@@ -128,8 +123,7 @@ public class CameraActivity extends Activity {
             }
         });
 
-        mAPP.setFrontTextView((TextView) findViewById(R.id.frontTextView));
-        mAPP.setRearTextView((TextView) findViewById(R.id.rearTextView));
+
 
     }
 
@@ -192,6 +186,13 @@ public class CameraActivity extends Activity {
             }
             ((FrameLayout.LayoutParams) layoutParkingSensors.getLayoutParams()).gravity = gravityPosition;
 
+            DisplayMetrics metrics = this.getResources().getDisplayMetrics();
+            int width = metrics.widthPixels;
+            int height = metrics.heightPixels;
+            carImageView.getLayoutParams().height = height / 100 * _settings.getInt("car_height", 30);
+            parkingSensorsView.setCarHeight(height / 100 * _settings.getInt("car_height", 30));
+
+
 
 
         } else {
@@ -221,8 +222,6 @@ public class CameraActivity extends Activity {
             mUSBMonitor = null;
         }
         mUVCCameraView = null;
-
-        mAPP.setCameraActivity(null);
 
         super.onDestroy();
     }

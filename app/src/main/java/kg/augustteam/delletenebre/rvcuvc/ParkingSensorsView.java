@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -106,6 +107,11 @@ public class ParkingSensorsView extends View {
 
     public void setCarSize(int width, int height) {
         carWidth = width;
+        carHeight = height;
+        invalidate();
+    }
+
+    public void setCarHeight(int height) {
         carHeight = height;
         invalidate();
     }

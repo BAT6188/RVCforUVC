@@ -17,8 +17,7 @@
         android:id="@+id/parking_sensors_layout"
         android:layout_width="400dp"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        android:layout_gravity="right">
+        android:visibility="gone">
 
         <kg.augustteam.delletenebre.rvcuvc.ParkingSensorsView
             android:id="@+id/parkingSensors"
@@ -29,8 +28,8 @@
         <ImageView
             android:id="@+id/carView"
             android:src="@drawable/car1"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:scaleType="fitCenter" />
@@ -43,10 +42,9 @@
             android:textColor="#fff"
             android:background="@drawable/ring"
             android:gravity="center_vertical|center_horizontal"
-
             android:textSize="30sp"
             android:layout_alignTop="@id/carView"
-            android:layout_marginLeft="30sp"/>
+            android:layout_marginTop="10dp"/>
 
         <TextView
             android:id="@+id/rearTextView"
@@ -57,35 +55,8 @@
             android:background="@drawable/ring"
             android:gravity="center_vertical|center_horizontal"
             android:textSize="30sp"
-            android:layout_alignBottom="@id/carView" />
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical|right">
-
-
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical|right">
-
-
-
-            </LinearLayout>
-        </LinearLayout>
+            android:layout_alignBottom="@id/carView"
+            android:layout_marginBottom="10dp" />
 
     </RelativeLayout>
 

@@ -8,11 +8,11 @@ import android.util.Log;
 public class CommandsReceiver extends BroadcastReceiver {
     private static final String RIM = "org.kangaroo.rim.action.ACTION_DATA_RECEIVE";
 
-    private APP mApp;
+    private APP mAPP;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        mApp = APP.getInstance();
+        mAPP = APP.getInstance();
 
         if ( intent.getAction().equals(RIM) ) {
             String command = intent.getStringExtra("org.kangaroo.rim.device.EXTRA_COMMAND").toLowerCase();
@@ -23,21 +23,25 @@ public class CommandsReceiver extends BroadcastReceiver {
 
             if (command.equals("transmissiongearposition")) {
                 if (args.equals("reverse")) {
-                    if (mApp.getCameraActivity() == null ) {
+                    if (mAPP.getCameraActivity() == null ) {
+//                        Intent cameraIntent = new Intent(context.getApplicationContext(), CameraActivity.class);
+//                        cameraIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+//                                | Intent.FLAG_ACTIVITY_CLEAR_TOP
+//                                | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        context.startActivity(cameraIntent);
                         Intent cameraIntent = new Intent(context.getApplicationContext(), CameraActivity.class);
-                        cameraIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                | Intent.FLAG_ACTIVITY_CLEAR_TOP
-                                | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(cameraIntent);
+                        cameraIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.getApplicationContext().startActivity(cameraIntent);
                     }
 
-                } else if (!args.equals("reverse") && mApp.getCameraActivity() != null ) {
-                    mApp.getCameraActivity().finish();
+                } else if (!args.equals("reverse") && mAPP.getCameraActivity() != null ) {
+                    mAPP.getCameraActivity().finish();
+                    mAPP.setCameraActivity(null);
                 }
 
 
             } else if ( command.equals("parkingsensorsdata") ) {
-                ParkingSensorsView view = mApp.getParkingSensorsView();
+                ParkingSensorsView view = mAPP.getParkingSensorsView();
                 if ( view != null ) {
                     view.setSensorsData("rear", args);
                 }
