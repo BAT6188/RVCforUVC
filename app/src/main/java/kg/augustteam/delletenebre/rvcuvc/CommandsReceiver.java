@@ -18,16 +18,18 @@ public class CommandsReceiver extends BroadcastReceiver {
             String command = intent.getStringExtra("org.kangaroo.rim.device.EXTRA_COMMAND").toLowerCase();
             String args = intent.getStringExtra("org.kangaroo.rim.device.EXTRA_ARGS").toLowerCase();
 
-            Log.d("******************", command);
-            Log.d("******************", args);
+            //Log.d("******************", command);
+            //Log.d("******************", args);
 
             if (command.equals("transmissiongearposition")) {
                 if (args.equals("reverse")) {
-                    Intent cameraIntent = new Intent(context.getApplicationContext(), CameraActivity.class);
-                    cameraIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                    | Intent.FLAG_ACTIVITY_CLEAR_TOP
-                                    | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(cameraIntent);
+                    if (mApp.getCameraActivity() == null ) {
+                        Intent cameraIntent = new Intent(context.getApplicationContext(), CameraActivity.class);
+                        cameraIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(cameraIntent);
+                    }
 
                 } else if (!args.equals("reverse") && mApp.getCameraActivity() != null ) {
                     mApp.getCameraActivity().finish();

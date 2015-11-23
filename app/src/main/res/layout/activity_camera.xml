@@ -15,7 +15,7 @@
 
     <RelativeLayout
         android:id="@+id/parking_sensors_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="400dp"
         android:layout_height="match_parent"
         android:visibility="gone"
         android:layout_gravity="right">
@@ -23,7 +23,7 @@
         <kg.augustteam.delletenebre.rvcuvc.ParkingSensorsView
             android:id="@+id/parkingSensors"
             android:background="@android:color/transparent"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
         <ImageView
@@ -32,7 +32,60 @@
             android:layout_width="300dp"
             android:layout_height="300dp"
             android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
             android:scaleType="fitCenter" />
+
+        <TextView
+            android:id="@+id/frontTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="#fff"
+            android:background="@drawable/ring"
+            android:gravity="center_vertical|center_horizontal"
+
+            android:textSize="30sp"
+            android:layout_alignTop="@id/carView"
+            android:layout_marginLeft="30sp"/>
+
+        <TextView
+            android:id="@+id/rearTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="#fff"
+            android:background="@drawable/ring"
+            android:gravity="center_vertical|center_horizontal"
+            android:textSize="30sp"
+            android:layout_alignBottom="@id/carView" />
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical|right">
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical|right">
+
+
+
+            </LinearLayout>
+        </LinearLayout>
 
     </RelativeLayout>
 

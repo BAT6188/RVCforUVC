@@ -4,11 +4,19 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.SurfaceTexture;
+import android.graphics.Typeface;
 import android.hardware.usb.UsbDevice;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Surface;
@@ -19,6 +27,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.serenegiant.usb.USBMonitor;
 import com.serenegiant.usb.UVCCamera;
@@ -118,6 +127,9 @@ public class CameraActivity extends Activity {
                 return false;
             }
         });
+
+        mAPP.setFrontTextView((TextView) findViewById(R.id.frontTextView));
+        mAPP.setRearTextView((TextView) findViewById(R.id.rearTextView));
 
     }
 
