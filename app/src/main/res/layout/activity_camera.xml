@@ -34,25 +34,25 @@
             android:layout_centerHorizontal="true"
             android:scaleType="fitCenter" />
 
-        <TextView
+        <kg.augustteam.delletenebre.rvcuvc.TextViewCircle
             android:id="@+id/frontTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:text="---"
             android:textColor="#fff"
-            android:background="@drawable/ring"
+
             android:gravity="center_vertical|center_horizontal"
             android:textSize="30sp"
             android:layout_alignTop="@id/carView"
             android:layout_marginTop="10dp"/>
 
-        <TextView
+        <kg.augustteam.delletenebre.rvcuvc.TextViewCircle
             android:id="@+id/rearTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:padding="20dp"
+            android:text="---"
             android:textColor="#fff"
-            android:background="@drawable/ring"
             android:gravity="center_vertical|center_horizontal"
             android:textSize="30sp"
             android:layout_alignBottom="@id/carView"

@@ -170,8 +170,9 @@ public class ParkingSensorsView extends View {
         SpannableString textDistanceSpan = new SpannableString(textDistance);
         textDistanceSpan.setSpan(new StyleSpan(Typeface.BOLD), 0, textDistance.length(), 0);
 
-        final TextView ringView = mAPP.getRingView(side);
+        final TextViewCircle ringView = mAPP.getRingView(side);
         if (ringView != null) {
+            ringView.setRingColorAnimated(dataColor);
 
             String currentString = String.valueOf(ringView.getText());
             String[] separated = currentString.split("\n");

@@ -1,34 +1,21 @@
 package kg.augustteam.delletenebre.rvcuvc;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.SurfaceTexture;
-import android.graphics.Typeface;
 import android.hardware.usb.UsbDevice;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Surface;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.serenegiant.usb.USBMonitor;
 import com.serenegiant.usb.UVCCamera;
@@ -62,8 +49,8 @@ public class CameraActivity extends Activity {
     private Surface mPreviewSurface;
 
 
-    ImageView carImageView;
-    ParkingSensorsView parkingSensorsView;
+    private ImageView carImageView;
+    private ParkingSensorsView parkingSensorsView;
 
 
     protected void onNewIntent(Intent intent) {
@@ -90,8 +77,8 @@ public class CameraActivity extends Activity {
         parkingSensorsView = (ParkingSensorsView) findViewById(R.id.parkingSensors);
         carImageView = (ImageView) findViewById(R.id.carView);
 
-        mAPP.setFrontTextView((TextView) findViewById(R.id.frontTextView));
-        mAPP.setRearTextView((TextView) findViewById(R.id.rearTextView));
+        mAPP.setFrontTextView((TextViewCircle) findViewById(R.id.frontTextView));
+        mAPP.setRearTextView((TextViewCircle) findViewById(R.id.rearTextView));
 
         mUSBMonitor = new USBMonitor(this, mOnDeviceConnectListener);
         mUSBMonitor.register();

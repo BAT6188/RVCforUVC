@@ -28,23 +28,23 @@ public class APP extends Application {
         return mParkingSensorsView;
     }
 
-    private TextView mFrontTextView;
-    public void setFrontTextView(TextView view) {
+    private TextViewCircle mFrontTextView;
+    public void setFrontTextView(TextViewCircle view) {
         mFrontTextView = view;
     }
-    public TextView getFrontTextView() {
+    public TextViewCircle getFrontTextView() {
         return mFrontTextView;
     }
 
-    private TextView mRearTextView;
-    public void setRearTextView(TextView view) {
+    private TextViewCircle mRearTextView;
+    public void setRearTextView(TextViewCircle view) {
         mRearTextView = view;
     }
-    public TextView getRearTextView() {
+    public TextViewCircle getRearTextView() {
         return mRearTextView;
     }
 
-    public TextView getRingView(String side) {
+    public TextViewCircle getRingView(String side) {
         side = side.toLowerCase();
         if ( side.equals("front") ) {
             return mFrontTextView;
