@@ -45,6 +45,12 @@
     <string name="pref_name_ps_enable">Включить парковоные сенсоры</string>
     <string name="pref_desc_ps_enable">Отображать данные парковочных сенсоров</string>
 
+    <string name="pref_name_ps_min">Минимальное определяемое расстояние сенсора</string>
+    <string name="pref_default_ps_min">0</string>
+
+    <string name="pref_name_ps_max">Максимальное определяемое расстояние сенсора</string>
+    <string name="pref_default_ps_max">255</string>
+
     <string name="pref_name_ps_position">Расположение на экране</string>
     <string-array name="pref_ps_position_titles">
         <item>Слева</item>
@@ -56,6 +62,9 @@
         <item>center</item>
         <item>right</item>
     </string-array>
+
+    <string name="pref_name_units">Единицы измерения</string>
+    <string name="pref_default_units">см</string>
 
 
 

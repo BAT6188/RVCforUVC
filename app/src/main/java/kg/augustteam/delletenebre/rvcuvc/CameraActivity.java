@@ -191,6 +191,11 @@ public class CameraActivity extends Activity {
             int height = metrics.heightPixels;
             carImageView.getLayoutParams().height = height / 100 * _settings.getInt("car_height", 30);
             parkingSensorsView.setCarHeight(height / 100 * _settings.getInt("car_height", 30));
+            parkingSensorsView.setUnits(_settings.getString("units", "см"));
+            parkingSensorsView.setMinMaxDistances(
+                    Integer.parseInt(_settings.getString("ps_min", getString(R.string.pref_default_ps_min))),
+                    Integer.parseInt(_settings.getString("ps_max", getString(R.string.pref_default_ps_max))));
+
 
 
 

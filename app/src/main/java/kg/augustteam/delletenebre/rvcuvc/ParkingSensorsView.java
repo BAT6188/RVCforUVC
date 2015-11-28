@@ -41,16 +41,17 @@ public class ParkingSensorsView extends View {
     private int sensorsSize = 20;
     private int strokeWidth = 3;
 
-    private int minDistance = 30;
+    private int minDistance = 0;
     private int maxDistance = 255;
 
     private int carWidth = 0, carHeight = 0;
 
     private int emptyColor;
+    private String units;
     private SpannableString unitsSpan;
 
     private int[] rearSensorsData, frontSensorsData;
-    private String rearInputString = "30,250,70,120";
+    private String rearInputString = "-1,-1,-1,-1";
     private String frontInputString = "120,220";
 
     public ParkingSensorsView(Context context) {
@@ -84,9 +85,7 @@ public class ParkingSensorsView extends View {
         rearSensorsData = stringToIntArray(rearInputString);
         frontSensorsData = stringToIntArray(frontInputString);
 
-        String units = "см";
-        unitsSpan = new SpannableString(units);
-        unitsSpan.setSpan(new RelativeSizeSpan(0.5f), 0, units.length(), 0);
+        setUnits("см");
     }
 
     @Override
@@ -95,19 +94,30 @@ public class ParkingSensorsView extends View {
         mAPP.setParkingSensorsView(null);
     }
 
-    public void setSensorsData(String type, String data){
-        if ( type.equals("rear") ) {
-            rearSensorsData = stringToIntArray(data);
-        } else if ( type.equals("front") ) {
-            rearSensorsData = stringToIntArray(data);
-        }
+    public void setMinMaxDistances(int min, int max) {
+        minDistance = min;
+        maxDistance = max;
 
         invalidate();
     }
 
-    public void setCarSize(int width, int height) {
-        carWidth = width;
-        carHeight = height;
+    public String getUnits() {
+        return units;
+    }
+    public void setUnits(String units) {
+        this.units = units;
+        unitsSpan = new SpannableString(this.units);
+        unitsSpan.setSpan(new RelativeSizeSpan(0.5f), 0, this.units.length(), 0);
+    }
+
+    public void setSensorsData(String type, String data) {
+        if ( type.equals("rear") ) {
+            rearSensorsData = stringToIntArray(data);
+            ArrayUtils.reverse(rearSensorsData);
+        } else if ( type.equals("front") ) {
+            rearSensorsData = stringToIntArray(data);
+        }
+
         invalidate();
     }
 
@@ -141,35 +151,47 @@ public class ParkingSensorsView extends View {
                 sweepSegment = sweepAngle / countSensors;
 
 
-        List listSensorsData = Arrays.asList(ArrayUtils.toObject(sensorsData));
-        int min = (int) Collections.min(listSensorsData);
+        int[] tempSensorsData = sensorsData;
+        while (ArrayUtils.contains(tempSensorsData, -1)) {
+            tempSensorsData = ArrayUtils.removeElement(tempSensorsData, -1);
+        }
+        int min = -1;
+        if (tempSensorsData.length > 0) {
+            min = Collections.min(Arrays.asList(ArrayUtils.toObject(tempSensorsData)));
+            if ( min > maxDistance ) {
+                min = maxDistance;
+            }
+        }
 
         int dataColor = getColorByPercent((min * 1f / maxDistance));
 
 
-        String textDistance = String.valueOf(min);
+        String textDistance = (min > -1) ? String.valueOf(min) : "---";
         SpannableString textDistanceSpan = new SpannableString(textDistance);
         textDistanceSpan.setSpan(new StyleSpan(Typeface.BOLD), 0, textDistance.length(), 0);
 
         final TextView ringView = mAPP.getRingView(side);
         if (ringView != null) {
 
-            String CurrentString = String.valueOf(ringView.getText());
-            String[] separated = CurrentString.split("\n");
-            //ringView.setText(TextUtils.concat(textDistance, "\n", unitsSpan));
+            String currentString = String.valueOf(ringView.getText());
+            String[] separated = currentString.split("\n");
+            if (separated[0].equals("---") || min < 0) {
+                ringView.setText(TextUtils.concat(textDistanceSpan, "\n", unitsSpan));
+            } else {
 
-            ValueAnimator animator = new ValueAnimator();
-            animator.setObjectValues(Integer.parseInt(separated[0]), min);
-            animator.setDuration(300);
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    String textDistance = String.valueOf(animation.getAnimatedValue());
-                    SpannableString textDistanceSpan = new SpannableString(textDistance);
-                    textDistanceSpan.setSpan(new StyleSpan(Typeface.BOLD), 0, textDistance.length(), 0);
-                    ringView.setText(TextUtils.concat(textDistanceSpan, "\n", unitsSpan));
-                }
-            });
-            animator.start();
+                ValueAnimator animator = new ValueAnimator();
+                animator.setObjectValues(Integer.parseInt(separated[0]), min);
+                animator.setDuration(200);
+                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        String textDistance = String.valueOf(animation.getAnimatedValue());
+                        SpannableString textDistanceSpan = new SpannableString(textDistance);
+                        textDistanceSpan.setSpan(new StyleSpan(Typeface.BOLD), 0, textDistance.length(), 0);
+                        ringView.setText(TextUtils.concat(textDistanceSpan, "\n", unitsSpan));
+                    }
+                });
+                animator.start();
+            }
         }
 
         for(int i = 0; i < sensorsSize; i++) {
@@ -184,11 +206,16 @@ public class ParkingSensorsView extends View {
             for (int j = 0; j < countSensors; j++) {
                 path = new Path();
                 if ( countSensors == sensorsData.length ) {
-                    int dataValuePercent = (sensorsData[j] - minDistance) * 100 /
+                    int sensorVal = sensorsData[j];
+                    if ( sensorVal > maxDistance ) {
+                        sensorVal = maxDistance;
+                    }
+
+                    int dataValuePercent = (sensorVal - minDistance) * 100 /
                             (maxDistance - minDistance);
 
                     mPaint.setColor(
-                            ( dataValuePercent >= currentPercent )
+                            ( dataValuePercent >= currentPercent && sensorVal > -1 )
                                     ? dataColor
                                     : emptyColor);
                 }
