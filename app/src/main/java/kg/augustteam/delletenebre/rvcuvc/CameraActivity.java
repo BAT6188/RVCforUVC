@@ -203,10 +203,6 @@ public class CameraActivity extends Activity {
             params.height = viewSize;
             ringView.setLayoutParams(params);
 
-
-
-
-
         } else {
             layoutParkingSensors.setVisibility(RelativeLayout.GONE);
         }
