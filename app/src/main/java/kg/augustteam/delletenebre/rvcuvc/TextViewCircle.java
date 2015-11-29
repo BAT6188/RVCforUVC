@@ -36,9 +36,7 @@ public class TextViewCircle extends TextView {
         mPaint.setStrokeWidth(strokeWidth);
         setRingColor(Color.parseColor("#1e90ff"));
     }
-    public int getRingColor() {
-        return ringColor;
-    }
+
     public void setRingColor(int color) {
         ringColor = color;
 
@@ -47,7 +45,7 @@ public class TextViewCircle extends TextView {
     public void setRingColorAnimated(int color) {
         ValueAnimator anim = ObjectAnimator.ofInt(this, "ringColor", ringColor, color);
         anim.setEvaluator(new ArgbEvaluator());
-        anim.setDuration(1000).start();
+        anim.setDuration(500).start();
 
     }
 

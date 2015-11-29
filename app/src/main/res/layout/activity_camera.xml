@@ -48,9 +48,8 @@
 
         <kg.augustteam.delletenebre.rvcuvc.TextViewCircle
             android:id="@+id/rearTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="20dp"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
             android:text="---"
             android:textColor="#fff"
             android:gravity="center_vertical|center_horizontal"

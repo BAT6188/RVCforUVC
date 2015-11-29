@@ -69,6 +69,7 @@
 
         <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:key="car_height"
+            android:dependency="ps_enable"
             android:title="Размер автомобиля"
             android:summary=""
             android:defaultValue="30"
@@ -77,8 +78,20 @@
             sample:msbp_interval="1"
             sample:msbp_measurementUnit="%"/>
 
+        <com.pavelsikun.seekbarpreference.SeekBarPreference
+            android:key="car_font_size"
+            android:dependency="ps_enable"
+            android:title="Размер шрифта"
+            android:summary=""
+            android:defaultValue="30"
+            sample:msbp_minValue="5"
+            sample:msbp_maxValue="120"
+            sample:msbp_interval="1"
+            sample:msbp_measurementUnit="sp"/>
+
         <EditTextPreference
             android:key="ps_min"
+            android:dependency="ps_enable"
             android:title="@string/pref_name_ps_min"
             android:defaultValue="@string/pref_default_ps_min"
             android:selectAllOnFocus="true"
@@ -88,6 +101,7 @@
 
         <EditTextPreference
             android:key="ps_max"
+            android:dependency="ps_enable"
             android:title="@string/pref_name_ps_max"
             android:defaultValue="@string/pref_default_ps_max"
             android:selectAllOnFocus="true"
@@ -97,6 +111,7 @@
 
         <EditTextPreference
             android:key="units"
+            android:dependency="ps_enable"
             android:title="@string/pref_name_units"
             android:defaultValue="@string/pref_default_units"
             android:selectAllOnFocus="true"
