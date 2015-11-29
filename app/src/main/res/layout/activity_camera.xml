@@ -38,24 +38,27 @@
             android:id="@+id/frontTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="---"
+            android:layout_alignTop="@id/carView"
+            android:layout_marginTop="10dp"
+
+            android:text="@string/parking_sensor_none_value"
+            android:textSize="30sp"
             android:textColor="#fff"
 
-            android:gravity="center_vertical|center_horizontal"
-            android:textSize="30sp"
-            android:layout_alignTop="@id/carView"
-            android:layout_marginTop="10dp"/>
+            android:gravity="center_vertical|center_horizontal" />
 
         <kg.augustteam.delletenebre.rvcuvc.TextViewCircle
             android:id="@+id/rearTextView"
             android:layout_width="100sp"
             android:layout_height="100sp"
-            android:text="---"
-            android:textColor="#fff"
-            android:gravity="center_vertical|center_horizontal"
-            android:textSize="30sp"
             android:layout_alignBottom="@id/carView"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="10dp"
+
+            android:text="@string/parking_sensor_none_value"
+            android:textSize="30sp"
+            android:textColor="#fff"
+
+            android:gravity="center_vertical|center_horizontal" />
 
     </RelativeLayout>
 

@@ -10,9 +10,11 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Surface;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -182,6 +184,24 @@ public class CameraActivity extends Activity {
             parkingSensorsView.setMinMaxDistances(
                     Integer.parseInt(_settings.getString("ps_min", getString(R.string.pref_default_ps_min))),
                     Integer.parseInt(_settings.getString("ps_max", getString(R.string.pref_default_ps_max))));
+
+            int fontSize = _settings.getInt("car_font_size", 30);
+            float scaledDensity = getResources().getDisplayMetrics().scaledDensity;
+            int viewSize = (int) (fontSize * 3 * scaledDensity);
+
+            TextViewCircle ringView = mAPP.getRingView("rear");
+            ringView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+            ViewGroup.LayoutParams params = ringView.getLayoutParams();
+            params.width = viewSize;
+            params.height = viewSize;
+            ringView.setLayoutParams(params);
+
+            ringView = mAPP.getRingView("front");
+            ringView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+            params = ringView.getLayoutParams();
+            params.width = viewSize;
+            params.height = viewSize;
+            ringView.setLayoutParams(params);
 
 
 

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">RVC@UVC</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="parking_sensor_none_value">---</string>
 
     <!-- Strings related to Settings -->
 
