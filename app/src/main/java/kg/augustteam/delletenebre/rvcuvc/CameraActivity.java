@@ -179,6 +179,18 @@ public class CameraActivity extends Activity {
             int width = metrics.widthPixels;
             int height = metrics.heightPixels;
             carImageView.getLayoutParams().height = height / 100 * _settings.getInt("car_height", 30);
+
+            double aspectRatio = 0.4998053527980535;//width / height of car1.xml
+            carImageView.getLayoutParams().width = (int)(carImageView.getLayoutParams().height * aspectRatio);
+
+            int frontSensorsCount = _settings.getInt("car_front_sensors_count", 0),
+                rearSensorsCount = _settings.getInt("car_rear_sensors_count", 0);
+            parkingSensorsView.setFrontSensorsCount(frontSensorsCount);
+            mAPP.getFrontTextView().setVisibility((frontSensorsCount == 0) ? View.GONE : View.VISIBLE);
+            parkingSensorsView.setRearSensorsCount(rearSensorsCount);
+            mAPP.getRearTextView().setVisibility( (rearSensorsCount == 0) ? View.GONE : View.VISIBLE );
+
+
             parkingSensorsView.setCarHeight(height / 100 * _settings.getInt("car_height", 30));
             parkingSensorsView.setUnits(_settings.getString("units", "см"));
             parkingSensorsView.setMinMaxDistances(

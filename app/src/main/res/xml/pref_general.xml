@@ -68,6 +68,25 @@
             android:positiveButtonText="@null" />
 
         <com.pavelsikun.seekbarpreference.SeekBarPreference
+            android:key="car_front_sensors_count"
+            android:dependency="ps_enable"
+            android:title="@string/pref_name_front_sensors_count"
+            android:summary="@string/pref_desc_front_sensors_count"
+            android:defaultValue="0"
+            sample:msbp_minValue="0"
+            sample:msbp_maxValue="4"
+            sample:msbp_interval="1" />
+        <com.pavelsikun.seekbarpreference.SeekBarPreference
+            android:key="car_rear_sensors_count"
+            android:dependency="ps_enable"
+            android:title="@string/pref_name_rear_sensors_count"
+            android:summary="@string/pref_desc_rear_sensors_count"
+            android:defaultValue="4"
+            sample:msbp_minValue="0"
+            sample:msbp_maxValue="4"
+            sample:msbp_interval="1" />
+
+        <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:key="car_height"
             android:dependency="ps_enable"
             android:title="Размер автомобиля"
@@ -77,6 +96,8 @@
             sample:msbp_maxValue="80"
             sample:msbp_interval="1"
             sample:msbp_measurementUnit="%"/>
+
+
 
         <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:key="car_font_size"

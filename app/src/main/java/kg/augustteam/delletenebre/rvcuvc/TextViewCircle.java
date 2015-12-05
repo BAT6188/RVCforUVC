@@ -34,7 +34,6 @@ public class TextViewCircle extends TextView {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(strokeWidth);
-        setRingColor(Color.parseColor("#1e90ff"));
     }
 
     public void setRingColor(int color) {

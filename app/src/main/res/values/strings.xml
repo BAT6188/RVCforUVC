@@ -46,6 +46,11 @@
     <string name="pref_name_ps_enable">Включить парковоные сенсоры</string>
     <string name="pref_desc_ps_enable">Отображать данные парковочных сенсоров</string>
 
+    <string name="pref_name_front_sensors_count">Количество сенсоров впереди</string>
+    <string name="pref_desc_front_sensors_count">Укажите количество парковочных сенсоров установленных на переднем бампере</string>
+    <string name="pref_name_rear_sensors_count">Количество сенсоров сзади</string>
+    <string name="pref_desc_rear_sensors_count">Укажите количество парковочных сенсоров установленных на заднем бампере</string>
+
     <string name="pref_name_ps_min">Минимальное определяемое расстояние сенсора</string>
     <string name="pref_default_ps_min">0</string>
 
