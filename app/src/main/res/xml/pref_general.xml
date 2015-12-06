@@ -13,7 +13,7 @@
         <ListPreference
             android:key="fullscreen"
             android:title="@string/pref_name_fullscreen"
-            android:defaultValue="2"
+            android:defaultValue="hide_title_bar"
             android:entries="@array/pref_fullscreen_titles"
             android:entryValues="@array/pref_fullscreen_values"
             android:negativeButtonText="@null"
@@ -76,6 +76,15 @@
             sample:msbp_minValue="0"
             sample:msbp_maxValue="4"
             sample:msbp_interval="1" />
+        <ListPreference
+            android:key="ps_front_indicator_position"
+            android:dependency="ps_enable"
+            android:title="@string/pref_name_ps_front_indicator_position"
+            android:defaultValue="left"
+            android:entries="@array/pref_ps_front_indicator_position_titles"
+            android:entryValues="@array/pref_ps_front_indicator_position_values"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null" />
         <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:key="car_rear_sensors_count"
             android:dependency="ps_enable"
@@ -85,6 +94,24 @@
             sample:msbp_minValue="0"
             sample:msbp_maxValue="4"
             sample:msbp_interval="1" />
+        <ListPreference
+            android:key="ps_rear_indicator_position"
+            android:dependency="ps_enable"
+            android:title="@string/pref_name_ps_rear_indicator_position"
+            android:defaultValue="left"
+            android:entries="@array/pref_ps_rear_indicator_position_titles"
+            android:entryValues="@array/pref_ps_rear_indicator_position_values"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null" />
+        <EditTextPreference
+            android:key="ps_indicators_margin"
+            android:dependency="ps_enable"
+            android:title="@string/pref_name_ps_indicators_margin"
+            android:defaultValue="@string/pref_default_ps_indicators_margin"
+            android:selectAllOnFocus="true"
+            android:inputType="numberDecimal"
+            android:singleLine="true"
+            android:maxLines="1" />
 
         <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:key="car_height"

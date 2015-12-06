@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.serenegiant.usb.USBMonitor;
@@ -158,18 +159,18 @@ public class CameraActivity extends Activity {
             layoutParkingSensors.setVisibility(RelativeLayout.VISIBLE);
 
             String position = _settings.getString("ps_position", "left");
-            int gravityPosition = Gravity.LEFT;
+            int gravityPosition = Gravity.START;
 
             switch ( position ) {
                 case "left":
-                    gravityPosition = Gravity.LEFT;
+                    gravityPosition = Gravity.START;
                     break;
                 case "center":
                     gravityPosition = Gravity.CENTER;
                     Log.d(TAG, "center");
                     break;
                 case "right":
-                    gravityPosition = Gravity.RIGHT;
+                    gravityPosition = Gravity.END;
                     Log.d(TAG, "right");
                     break;
             }
@@ -186,9 +187,15 @@ public class CameraActivity extends Activity {
             int frontSensorsCount = _settings.getInt("car_front_sensors_count", 0),
                 rearSensorsCount = _settings.getInt("car_rear_sensors_count", 0);
             parkingSensorsView.setFrontSensorsCount(frontSensorsCount);
-            mAPP.getFrontTextView().setVisibility((frontSensorsCount == 0) ? View.GONE : View.VISIBLE);
+            mAPP.getFrontTextView().setVisibility(
+                    (frontSensorsCount == 0 || _settings.getString("ps_front_indicator_position", "left").equals("disabled"))
+                            ? View.GONE
+                            : View.VISIBLE);
             parkingSensorsView.setRearSensorsCount(rearSensorsCount);
-            mAPP.getRearTextView().setVisibility( (rearSensorsCount == 0) ? View.GONE : View.VISIBLE );
+            mAPP.getRearTextView().setVisibility(
+                    (rearSensorsCount == 0 || _settings.getString("ps_rear_indicator_position", "left").equals("disabled"))
+                            ? View.GONE
+                            : View.VISIBLE );
 
 
             parkingSensorsView.setCarHeight(height / 100 * _settings.getInt("car_height", 30));
@@ -200,20 +207,44 @@ public class CameraActivity extends Activity {
             int fontSize = _settings.getInt("car_font_size", 30);
             float scaledDensity = getResources().getDisplayMetrics().scaledDensity;
             int viewSize = (int) (fontSize * 3 * scaledDensity);
+            int margins = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    Integer.parseInt(_settings.getString("ps_indicators_margin", "10")),
+                    getResources().getDisplayMetrics());
+            String frontIndicatorPosition = _settings.getString("ps_front_indicator_position", "left"),
+                   rearIndicatorPosition = _settings.getString("ps_rear_indicator_position", "left");
+
 
             TextViewCircle ringView = mAPP.getRingView("rear");
             ringView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
-            ViewGroup.LayoutParams params = ringView.getLayoutParams();
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ringView.getLayoutParams();
             params.width = viewSize;
             params.height = viewSize;
+            params.setMargins(margins, margins, margins, margins);
+            if ( rearIndicatorPosition.equals("left") ) {
+                params.addRule(RelativeLayout.RIGHT_OF, 0);
+                params.addRule(RelativeLayout.LEFT_OF, R.id.carView);
+            } else if ( rearIndicatorPosition.equals("right") ) {
+                params.addRule(RelativeLayout.RIGHT_OF, R.id.carView);
+                params.addRule(RelativeLayout.LEFT_OF, 0);
+            }
             ringView.setLayoutParams(params);
+
 
             ringView = mAPP.getRingView("front");
             ringView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
-            params = ringView.getLayoutParams();
+            params = (RelativeLayout.LayoutParams) ringView.getLayoutParams();
             params.width = viewSize;
             params.height = viewSize;
+            params.setMargins(margins, margins, margins, margins);
+            if ( frontIndicatorPosition.equals("left") ) {
+                params.addRule(RelativeLayout.RIGHT_OF, 0);
+                params.addRule(RelativeLayout.LEFT_OF, R.id.carView);
+            } else if ( frontIndicatorPosition.equals("right") ) {
+                params.addRule(RelativeLayout.RIGHT_OF, R.id.carView);
+                params.addRule(RelativeLayout.LEFT_OF, 0);
+            }
             ringView.setLayoutParams(params);
+
 
         } else {
             layoutParkingSensors.setVisibility(RelativeLayout.GONE);

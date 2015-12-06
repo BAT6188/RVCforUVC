@@ -48,8 +48,38 @@
 
     <string name="pref_name_front_sensors_count">Количество сенсоров впереди</string>
     <string name="pref_desc_front_sensors_count">Укажите количество парковочных сенсоров установленных на переднем бампере</string>
+
+
+    <string name="pref_name_ps_front_indicator_position">Расположение числового индикатора передних сенсоров</string>
+    <string-array name="pref_ps_front_indicator_position_titles">
+        <item>Не отображать</item>
+        <item>Слева</item>
+        <item>Справа</item>
+    </string-array>
+    <string-array name="pref_ps_front_indicator_position_values" translatable="false">
+        <item>disabled</item>
+        <item>left</item>
+        <item>right</item>
+    </string-array>
+
     <string name="pref_name_rear_sensors_count">Количество сенсоров сзади</string>
     <string name="pref_desc_rear_sensors_count">Укажите количество парковочных сенсоров установленных на заднем бампере</string>
+
+    <string name="pref_name_ps_rear_indicator_position">Расположение числового индикатора задних сенсоров</string>
+    <string-array name="pref_ps_rear_indicator_position_titles">
+        <item>Не отображать</item>
+        <item>Слева</item>
+        <item>Справа</item>
+    </string-array>
+    <string-array name="pref_ps_rear_indicator_position_values" translatable="false">
+        <item>disabled</item>
+        <item>left</item>
+        <item>right</item>
+    </string-array>
+
+    <string name="pref_name_ps_indicators_margin">Отступ числовых индикаторов (в dp)</string>
+    <string name="pref_default_ps_indicators_margin">10</string>
+
 
     <string name="pref_name_ps_min">Минимальное определяемое расстояние сенсора</string>
     <string name="pref_default_ps_min">0</string>

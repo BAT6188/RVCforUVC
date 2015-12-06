@@ -108,6 +108,9 @@ public class SettingsActivity extends PreferenceActivity {
 
             bindPreferenceSummaryToValue(findPreference("example_text"));
             bindPreferenceSummaryToValue(findPreference("fullscreen"));
+            bindPreferenceSummaryToValue(findPreference("ps_front_indicator_position"));
+            bindPreferenceSummaryToValue(findPreference("ps_rear_indicator_position"));
+            bindPreferenceSummaryToValue(findPreference("ps_indicators_margin"));
             bindPreferenceSummaryToValue(findPreference("ps_min"));
             bindPreferenceSummaryToValue(findPreference("ps_max"));
             bindPreferenceSummaryToValue(findPreference("ps_position"));
