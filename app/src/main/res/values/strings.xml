@@ -60,6 +60,11 @@
     <string name="pref_name_camera_mirror">Зеркальное отображение</string>
     <string name="pref_desc_camera_mirror">Отобразить по горизонтали картинку камеры</string>
 
+    <string name="pref_name_camera_width">Ширина области камеры</string>
+    <string name="pref_desc_camera_width">Укажите ширину области камеры, оставшаяся часть будет использована для отображения данных парковочных сенсоров</string>
+
+
+
 
     <!-- Parking Sensors settings -->
     <string name="pref_header_parkingsensors">Парковочные сенсоры</string>

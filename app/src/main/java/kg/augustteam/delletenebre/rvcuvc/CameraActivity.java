@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Surface;
@@ -62,6 +63,8 @@ public class CameraActivity extends Activity {
         }
     }
 
+    private FrameLayout mMainLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +104,7 @@ public class CameraActivity extends Activity {
 //            Log.d(TAG, device.getDeviceName() + " " + mUSBMonitor.hasPermission(device));
         }
 
-        FrameLayout mMainLayout = (FrameLayout)findViewById(R.id.main_layout);
+        mMainLayout = (FrameLayout)findViewById(R.id.main_layout);
         mMainLayout.setOnLongClickListener(new View.OnLongClickListener() {
 
             @Override
@@ -180,47 +183,54 @@ public class CameraActivity extends Activity {
             mUVCCameraView.setScaleX(mirrored ? -1 : 1);
 
             int cameraViewGravity = Gravity.START;
-            LinearLayout lo = (LinearLayout)findViewById(R.id.linear_layout);
-            View v = lo.getChildAt(1);
 
             switch (_settings.getString("camera_view_position", "left")) {
                 case "left":
-
-//                    lo.removeViewAt(1);
-//                    lo.addView(mUVCCameraView, 0);
+                    cameraViewGravity = Gravity.START|Gravity.CENTER_VERTICAL;
                     break;
-
+                case "center":
+                    cameraViewGravity = Gravity.CENTER;
+                    break;
                 case "right":
-                    //cameraViewGravity = Gravity.END;
-
-//                    lo.removeViewAt(1);
-//                    lo.addView(v, 0);
+                    cameraViewGravity = Gravity.END|Gravity.CENTER_VERTICAL;
                     break;
             }
-            ((LinearLayout.LayoutParams) mUVCCameraView.getLayoutParams()).gravity = cameraViewGravity;
+            ((FrameLayout.LayoutParams) mUVCCameraView.getLayoutParams()).gravity = cameraViewGravity;
         }
 
 
         if ( _settings.getBoolean("ps_enable", false) ) {
             layoutParkingSensors.setVisibility(RelativeLayout.VISIBLE);
-
-//            String position = _settings.getString("ps_position", "left");
-//            int gravityPosition = Gravity.START;
-//
-//            switch ( position ) {
-//                case "left":
-//                    gravityPosition = Gravity.START;
-//                    break;
-//                case "center":
-//                    gravityPosition = Gravity.CENTER;
-//                    break;
-//                case "right":
-//                    gravityPosition = Gravity.END;
-//                    break;
-//            }
-//            ((LinearLayout.LayoutParams) layoutParkingSensors.getLayoutParams()).gravity = gravityPosition;
-
             DisplayMetrics metrics = this.getResources().getDisplayMetrics();
+
+            int cameraPercentageWidth = _settings.getInt("camera_width", 70);
+
+            mUVCCameraView.getLayoutParams().width =
+                    metrics.widthPixels / 100 * cameraPercentageWidth;
+
+            layoutParkingSensors.getLayoutParams().width =
+                    metrics.widthPixels / 100 * (100 - cameraPercentageWidth);
+
+
+
+            String position = _settings.getString("ps_position", "left");
+            int gravityPosition = Gravity.START;
+
+            switch ( position ) {
+                case "left":
+                    gravityPosition = Gravity.START;
+                    break;
+                case "center":
+                    gravityPosition = Gravity.CENTER;
+                    break;
+                case "right":
+                    gravityPosition = Gravity.END;
+                    break;
+            }
+            ((FrameLayout.LayoutParams) layoutParkingSensors.getLayoutParams()).gravity = gravityPosition;
+
+
+
             int height = metrics.heightPixels;
             carImageView.getLayoutParams().height = height / 100 * _settings.getInt("car_height", 30);
 
@@ -293,6 +303,7 @@ public class CameraActivity extends Activity {
 
         } else {
             layoutParkingSensors.setVisibility(RelativeLayout.GONE);
+            mUVCCameraView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         }
 
         USBDeviceName = _settings.getString("usb_device_name", "");
