@@ -7,61 +7,71 @@
     android:background="@android:color/black"
     tools:context=".CameraActivity">
 
-    <kg.augustteam.delletenebre.rvcuvc.UVCCameraView
-        android:id="@+id/UVCCameraView"
+    <LinearLayout
+        android:id="@+id/linear_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="right" />
+        android:orientation="horizontal"
+        android:gravity="center">
 
-    <RelativeLayout
-        android:id="@+id/parking_sensors_layout"
-        android:layout_width="400dp"
-        android:layout_height="match_parent"
-        android:visibility="gone">
 
-        <kg.augustteam.delletenebre.rvcuvc.ParkingSensorsView
-            android:id="@+id/parkingSensors"
-            android:background="@android:color/transparent"
+
+
+        <RelativeLayout
+            android:id="@+id/parking_sensors_layout"
+            android:layout_width="400dp"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <kg.augustteam.delletenebre.rvcuvc.ParkingSensorsView
+                android:id="@+id/parkingSensors"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/carView"
+                android:src="@drawable/car1"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:scaleType="fitCenter"
+                android:layout_centerInParent="true" />
+
+            <kg.augustteam.delletenebre.rvcuvc.TextViewCircle
+                android:id="@+id/frontTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/carView"
+                android:layout_toLeftOf="@id/carView"
+                android:layout_margin="10dp"
+
+                android:text="@string/parking_sensor_none_value"
+                android:textSize="30sp"
+                android:textColor="#fff"
+
+                android:gravity="center_vertical|center_horizontal" />
+
+            <kg.augustteam.delletenebre.rvcuvc.TextViewCircle
+                android:id="@+id/rearTextView"
+                android:layout_width="100sp"
+                android:layout_height="100sp"
+                android:layout_alignBottom="@id/carView"
+                android:layout_toLeftOf="@id/carView"
+                android:layout_margin="10dp"
+
+                android:text="@string/parking_sensor_none_value"
+                android:textSize="30sp"
+                android:textColor="#fff"
+
+                android:gravity="center_vertical|center_horizontal" />
+
+        </RelativeLayout>
+        <kg.augustteam.delletenebre.rvcuvc.UVCCameraView
+            android:id="@+id/camera_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
-        <ImageView
-            android:id="@+id/carView"
-            android:src="@drawable/car1"
-            android:layout_width="wrap_content"
-            android:layout_height="150dp"
-            android:scaleType="fitCenter"
-            android:layout_centerInParent="true" />
-
-        <kg.augustteam.delletenebre.rvcuvc.TextViewCircle
-            android:id="@+id/frontTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/carView"
-            android:layout_toLeftOf="@id/carView"
-            android:layout_margin="10dp"
-
-            android:text="@string/parking_sensor_none_value"
-            android:textSize="30sp"
-            android:textColor="#fff"
-
-            android:gravity="center_vertical|center_horizontal" />
-
-        <kg.augustteam.delletenebre.rvcuvc.TextViewCircle
-            android:id="@+id/rearTextView"
-            android:layout_width="100sp"
-            android:layout_height="100sp"
-            android:layout_alignBottom="@id/carView"
-            android:layout_toLeftOf="@id/carView"
-            android:layout_margin="10dp"
-
-            android:text="@string/parking_sensor_none_value"
-            android:textSize="30sp"
-            android:textColor="#fff"
-
-            android:gravity="center_vertical|center_horizontal" />
-
-    </RelativeLayout>
 
 
 

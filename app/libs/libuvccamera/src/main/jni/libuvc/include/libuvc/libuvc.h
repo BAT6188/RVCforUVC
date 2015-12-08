@@ -625,13 +625,13 @@ uvc_error_t uvc_get_power_mode(uvc_device_handle_t *devh,
 uvc_error_t uvc_set_power_mode(uvc_device_handle_t *devh,
 		enum uvc_device_power_mode mode);
 //----------------------------------------------------------------------
-uvc_error_t uvc_get_scanning_mode(uvc_device_handle_t *devh, int *step,
+uvc_error_t uvc_get_scanning_mode(uvc_device_handle_t *devh, uint8_t *mode,
 		enum uvc_req_code req_code);
-uvc_error_t uvc_set_scanning_mode(uvc_device_handle_t *devh, int mode);
+uvc_error_t uvc_set_scanning_mode(uvc_device_handle_t *devh, uint8_t mode);
 //----------------------------------------------------------------------
-uvc_error_t uvc_get_ae_mode(uvc_device_handle_t *devh, int *mode,
+uvc_error_t uvc_get_ae_mode(uvc_device_handle_t *devh, uint8_t *mode,
 		enum uvc_req_code req_code);
-uvc_error_t uvc_set_ae_mode(uvc_device_handle_t *devh, int mode);
+uvc_error_t uvc_set_ae_mode(uvc_device_handle_t *devh, uint8_t mode);
 //----------------------------------------------------------------------
 uvc_error_t uvc_get_ae_priority(uvc_device_handle_t *devh, uint8_t *priority,
 		enum uvc_req_code req_code);
@@ -770,8 +770,8 @@ uvc_error_t uvc_get_analog_video_standard(uvc_device_handle_t *devh, uint8_t *st
 		enum uvc_req_code req_code);
 uvc_error_t uvc_set_analog_video_standard(uvc_device_handle_t *devh, uint8_t standard);
 //----------------------------------------------------------------------
-uvc_error_t uvc_get_analog_video_lock_status(uvc_device_handle_t *devh, uint8_t* status, enum uvc_req_code req_code);
-uvc_error_t uvc_set_analog_video_lock_status(uvc_device_handle_t *devh, uint8_t status);
+uvc_error_t uvc_get_analog_video_lockstate(uvc_device_handle_t *devh, uint8_t* state, enum uvc_req_code req_code);
+uvc_error_t uvc_set_analog_video_lockstate(uvc_device_handle_t *devh, uint8_t status);
 //----------------------------------------------------------------------
 uvc_error_t uvc_get_input_select(uvc_device_handle_t *devh, uint8_t* selector, enum uvc_req_code req_code);
 uvc_error_t uvc_set_input_select(uvc_device_handle_t *devh, uint8_t selector);
@@ -822,6 +822,8 @@ uvc_error_t uvc_yuyv2iyuv420SP(uvc_frame_t *in, uvc_frame_t *out);	// XXX
 uvc_error_t uvc_any2iyuv420SP(uvc_frame_t *in, uvc_frame_t *out);	// XXX
 
 uvc_error_t uvc_any2yuyv(uvc_frame_t *in, uvc_frame_t *out);		// XXX
+
+uvc_error_t uvc_ensure_frame_size(uvc_frame_t *frame, size_t need_bytes); // XXX
 
 //**********************************************************************
 // added for diagnostic

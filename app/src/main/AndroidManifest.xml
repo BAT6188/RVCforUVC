@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="kg.augustteam.delletenebre.rvcuvc" >
+    package="kg.augustteam.delletenebre.rvcuvc">
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
-        <activity android:name=".CameraActivity" >
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".CameraActivity"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".CameraActivity" >
+            android:parentActivityName=".CameraActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="kg.augustteam.delletenebre.rvcuvc.CameraActivity" />
@@ -26,11 +29,23 @@
 
         <receiver
             android:name=".CommandsReceiver"
-            android:enabled="true" >
+            android:enabled="true">
             <intent-filter>
                 <action android:name="org.kangaroo.rim.action.ACTION_DATA_RECEIVE" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".HiddenActivity"
+            android:theme="@style/Theme.Transparent"
+            android:noHistory="true"
+            android:excludeFromRecents="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+            <meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" android:resource="@xml/device_filter" />
+        </activity>
     </application>
 
 </manifest>

@@ -2,7 +2,6 @@ package kg.augustteam.delletenebre.rvcuvc;
 
 import android.app.Activity;
 import android.app.Application;
-import android.widget.TextView;
 
 public class APP extends Application {
     protected static final boolean DEBUG = true;

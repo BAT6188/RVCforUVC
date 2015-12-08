@@ -3,16 +3,13 @@ package kg.augustteam.delletenebre.rvcuvc;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 public class CommandsReceiver extends BroadcastReceiver {
     private static final String RIM = "org.kangaroo.rim.action.ACTION_DATA_RECEIVE";
 
-    private APP mAPP;
-
     @Override
     public void onReceive(Context context, Intent intent) {
-        mAPP = APP.getInstance();
+        APP mAPP = APP.getInstance();
 
         if ( intent.getAction().equals(RIM) ) {
             String command = intent.getStringExtra("org.kangaroo.rim.device.EXTRA_COMMAND").toLowerCase();
@@ -30,15 +27,14 @@ public class CommandsReceiver extends BroadcastReceiver {
                     }
 
                 } else if (!args.equals("reverse") && mAPP.getCameraActivity() != null ) {
-                    mAPP.getCameraActivity().finish();
+                    mAPP.getCameraActivity().finish();//.moveTaskToBack(true);//
                     mAPP.setCameraActivity(null);
                 }
 
 
             } else if ( command.equals("parkingsensorsdata") ) {
-                ParkingSensorsView view = mAPP.getParkingSensorsView();
-                if ( view != null ) {
-                    view.setSensorsData("rear", args);
+                if ( mAPP.getParkingSensorsView() != null ) {
+                    mAPP.getParkingSensorsView().setSensorsData("rear", args);
                 }
             }
         }

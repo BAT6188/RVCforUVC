@@ -129,16 +129,43 @@ public class UVCCamera {
     protected String mSupportedSize;
 	// these fields from here are accessed from native code and do not change name and remove
     protected long mNativePtr;
-    protected int mBrightnessMin, mBrightnessMax, mBrightnessDef;
+    protected int mScanningModeMin, mScanningModeMax, mScanningModeDef;
+    protected int mExposureModeMin, mExposureModeMax, mExposureModeDef;
+    protected int mExposurePriorityMin, mExposurePriorityMax, mExposurePriorityDef;
+    protected int mExposureMin, mExposureMax, mExposureDef;
+    protected int mAutoFocusMin, mAutoFocusMax, mAutoFocusDef;
     protected int mFocusMin, mFocusMax, mFocusDef;
+    protected int mFocusRelMin, mFocusRelMax, mFocusRelDef;
+    protected int mFocusSimpleMin, mFocusSimpleMax, mFocusSimpleDef;
+    protected int mIrisMin, mIrisMax, mIrisDef;
+    protected int mIrisRelMin, mIrisRelMax, mIrisRelDef;
+    protected int mPanMin, mPanMax, mPanDef;
+    protected int mTiltMin, mTiltMax, mTiltDef;
+    protected int mRollMin, mRollMax, mRollDef;
+    protected int mPanRelMin, mPanRelMax, mPanRelDef;
+    protected int mTiltRelMin, mTiltRelMax, mTiltRelDef;
+    protected int mRollRelMin, mRollRelMax, mRollRelDef;
+    protected int mPrivacyMin, mPrivacyMax, mPrivacyDef;
+    protected int mAutoWhiteBlanceMin, mAutoWhiteBlanceMax, mAutoWhiteBlanceDef;
+    protected int mAutoWhiteBlanceCompoMin, mAutoWhiteBlanceCompoMax, mAutoWhiteBlanceCompoDef;
+    protected int mWhiteBlanceMin, mWhiteBlanceMax, mWhiteBlanceDef;
+    protected int mWhiteBlanceCompoMin, mWhiteBlanceCompoMax, mWhiteBlanceCompoDef;
+    protected int mWhiteBlanceRelMin, mWhiteBlanceRelMax, mWhiteBlanceRelDef;
+    protected int mBacklightCompMin, mBacklightCompMax, mBacklightCompDef;
+    protected int mBrightnessMin, mBrightnessMax, mBrightnessDef;
     protected int mContrastMin, mContrastMax, mContrastDef;
     protected int mSharpnessMin, mSharpnessMax, mSharpnessDef;
     protected int mGainMin, mGainMax, mGainDef;
     protected int mGammaMin, mGammaMax, mGammaDef;
-    protected int mWhiteBlanceMin, mWhiteBlanceMax, mWhiteBlanceDef;
     protected int mSaturationMin, mSaturationMax, mSaturationDef;
     protected int mHueMin, mHueMax, mHueDef;
     protected int mZoomMin, mZoomMax, mZoomDef;
+    protected int mZoomRelMin, mZoomRelMax, mZoomRelDef;
+    protected int mPowerlineFrequencyMin, mPowerlineFrequencyMax, mPowerlineFrequencyDef;
+    protected int mMultiplierMin, mMultiplierMax, mMultiplierDef;
+    protected int mMultiplierLimitMin, mMultiplierLimitMax, mMultiplierLimitDef;
+    protected int mAnalogVideoStandardMin, mAnalogVideoStandardMax, mAnalogVideoStandardDef;
+    protected int mAnalogVideoLockStateMin, mAnalogVideoLockStateMax, mAnalogVideoLockStateDef;
     // until here
     /**
      * the sonctructor of this class should be call within the thread that has a looper
@@ -1002,9 +1029,27 @@ public class UVCCamera {
     private static final native long nativeGetCtrlSupports(final long id_camera);
     private static final native long nativeGetProcSupports(final long id_camera);
 
+    private final native int nativeUpdateScanningModeLimit(final long id_camera);
+    private static final native int nativeSetScanningMode(final long id_camera, final int scanning_mode);
+    private static final native int nativeGetScanningMode(final long id_camera);
+
+	private final native int nativeUpdateExposureModeLimit(final long id_camera);
     private static final native int nativeSetExposureMode(final long id_camera, final int exposureMode);
     private static final native int nativeGetExposureMode(final long id_camera);
 
+	private final native int nativeUpdateExposurePriorityLimit(final long id_camera);
+    private static final native int nativeSetExposurePriority(final long id_camera, final int priority);
+    private static final native int nativeGetExposurePriority(final long id_camera);
+
+	private final native int nativeUpdateExposureLimit(final long id_camera);
+    private static final native int nativeSetExposure(final long id_camera, final int exposure);
+    private static final native int nativeGetExposure(final long id_camera);
+
+	private final native int nativeUpdateExposureRelLimit(final long id_camera);
+    private static final native int nativeSetExposureRel(final long id_camera, final int exposure_rel);
+    private static final native int nativeGetExposureRel(final long id_camera);
+
+	private final native int nativeUpdateAutoFocusLimit(final long id_camera);
     private static final native int nativeSetAutoFocus(final long id_camera, final boolean autofocus);
     private static final native int nativeGetAutoFocus(final long id_camera);
 
@@ -1012,14 +1057,63 @@ public class UVCCamera {
     private static final native int nativeSetFocus(final long id_camera, final int focus);
     private static final native int nativeGetFocus(final long id_camera);
 
+    private final native int nativeUpdateFocusRelLimit(final long id_camera);
+    private static final native int nativeSetFocusRel(final long id_camera, final int focus_rel);
+    private static final native int nativeGetFocusRel(final long id_camera);
+
+    private final native int nativeUpdateIrisLimit(final long id_camera);
+    private static final native int nativeSetIris(final long id_camera, final int iris);
+    private static final native int nativeGetIris(final long id_camera);
+
+    private final native int nativeUpdateIrisRelLimit(final long id_camera);
+    private static final native int nativeSetIrisRel(final long id_camera, final int iris_rel);
+    private static final native int nativeGetIrisRel(final long id_camera);
+
+    private final native int nativeUpdatePanLimit(final long id_camera);
+    private static final native int nativeSetPan(final long id_camera, final int pan);
+    private static final native int nativeGetPan(final long id_camera);
+
+    private final native int nativeUpdatePanRelLimit(final long id_camera);
+    private static final native int nativeSetPanRel(final long id_camera, final int pan_rel);
+    private static final native int nativeGetPanRel(final long id_camera);
+
+    private final native int nativeUpdateTiltLimit(final long id_camera);
+    private static final native int nativeSetTilt(final long id_camera, final int tilt);
+    private static final native int nativeGetTilt(final long id_camera);
+
+    private final native int nativeUpdateTiltRelLimit(final long id_camera);
+    private static final native int nativeSetTiltRel(final long id_camera, final int tilt_rel);
+    private static final native int nativeGetTiltRel(final long id_camera);
+
+    private final native int nativeUpdateRollLimit(final long id_camera);
+    private static final native int nativeSetRoll(final long id_camera, final int roll);
+    private static final native int nativeGetRoll(final long id_camera);
+
+    private final native int nativeUpdateRollRelLimit(final long id_camera);
+    private static final native int nativeSetRollRel(final long id_camera, final int roll_rel);
+    private static final native int nativeGetRollRel(final long id_camera);
+
+	private final native int nativeUpdateAutoWhiteBlanceLimit(final long id_camera);
     private static final native int nativeSetAutoWhiteBlance(final long id_camera, final boolean autoWhiteBlance);
     private static final native int nativeGetAutoWhiteBlance(final long id_camera);
 
-    private final native int nativeUpdateWhiteBlanceLimit(final long id_camera);
+    private final native int nativeUpdateAutoWhiteBlanceCompoLimit(final long id_camera);
+    private static final native int nativeSetAutoWhiteBlanceCompo(final long id_camera, final boolean autoWhiteBlanceCompo);
+    private static final native int nativeGetAutoWhiteBlanceCompo(final long id_camera);
+
+	private final native int nativeUpdateWhiteBlanceLimit(final long id_camera);
     private static final native int nativeSetWhiteBlance(final long id_camera, final int whiteBlance);
     private static final native int nativeGetWhiteBlance(final long id_camera);
 
-    private final native int nativeUpdateBrightnessLimit(final long id_camera);
+	private final native int nativeUpdateWhiteBlanceCompoLimit(final long id_camera);
+    private static final native int nativeSetWhiteBlanceCompo(final long id_camera, final int whiteBlance_compo);
+    private static final native int nativeGetWhiteBlanceCompo(final long id_camera);
+
+	private final native int nativeUpdateBacklightCompLimit(final long id_camera);
+    private static final native int nativeSetBacklightComp(final long id_camera, final int backlight_comp);
+    private static final native int nativeGetBacklightComp(final long id_camera);
+
+	private final native int nativeUpdateBrightnessLimit(final long id_camera);
     private static final native int nativeSetBrightness(final long id_camera, final int brightness);
     private static final native int nativeGetBrightness(final long id_camera);
 
@@ -1027,7 +1121,11 @@ public class UVCCamera {
     private static final native int nativeSetContrast(final long id_camera, final int contrast);
     private static final native int nativeGetContrast(final long id_camera);
 
-    private final native int nativeUpdateSharpnessLimit(final long id_camera);
+	private final native int nativeUpdateAutoContrastLimit(final long id_camera);
+    private static final native int nativeSetAutoContrast(final long id_camera, final boolean autocontrast);
+    private static final native int nativeGetAutoContrast(final long id_camera);
+
+	private final native int nativeUpdateSharpnessLimit(final long id_camera);
     private static final native int nativeSetSharpness(final long id_camera, final int sharpness);
     private static final native int nativeGetSharpness(final long id_camera);
 
@@ -1047,10 +1145,39 @@ public class UVCCamera {
     private static final native int nativeSetHue(final long id_camera, final int hue);
     private static final native int nativeGetHue(final long id_camera);
 
+	private final native int nativeUpdateAutoHueLimit(final long id_camera);
+	private static final native int nativeSetAutoHue(final long id_camera, final boolean autohue);
+	private static final native int nativeGetAutoHue(final long id_camera);
+
+	private final native int nativeUpdatePowerlineFrequencyLimit(final long id_camera);
     private static final native int nativeSetPowerlineFrequency(final long id_camera, final int frequency);
     private static final native int nativeGetPowerlineFrequency(final long id_camera);
 
     private final native int nativeUpdateZoomLimit(final long id_camera);
     private static final native int nativeSetZoom(final long id_camera, final int zoom);
     private static final native int nativeGetZoom(final long id_camera);
+
+    private final native int nativeUpdateZoomRelLimit(final long id_camera);
+    private static final native int nativeSetZoomRel(final long id_camera, final int zoom_rel);
+    private static final native int nativeGetZoomRel(final long id_camera);
+
+    private final native int nativeUpdateDigitalMultiplierLimit(final long id_camera);
+    private static final native int nativeSetDigitalMultiplier(final long id_camera, final int multiplier);
+    private static final native int nativeGetDigitalMultiplier(final long id_camera);
+
+	private final native int nativeUpdateDigitalMultiplierLimitLimit(final long id_camera);
+    private static final native int nativeSetDigitalMultiplierLimit(final long id_camera, final int multiplier_limit);
+    private static final native int nativeGetDigitalMultiplierLimit(final long id_camera);
+
+	private final native int nativeUpdateAnalogVideoStandardLimit(final long id_camera);
+    private static final native int nativeSetAnalogVideoStandard(final long id_camera, final int standard);
+    private static final native int nativeGetAnalogVideoStandard(final long id_camera);
+
+	private final native int nativeUpdateAnalogVideoLockStateLimit(final long id_camera);
+    private static final native int nativeSetAnalogVideoLoackState(final long id_camera, final int state);
+    private static final native int nativeGetAnalogVideoLoackState(final long id_camera);
+
+	private final native int nativeUpdatePrivacyLimit(final long id_camera);
+    private static final native int nativeSetPrivacy(final long id_camera, final boolean privacy);
+    private static final native int nativeGetPrivacy(final long id_camera);
 }

@@ -39,6 +39,27 @@
     </string-array>
 
 
+    <!-- General camera -->
+    <string name="pref_header_camera">Камера</string>
+
+    <string name="pref_name_camera_view_position">Выравнивание на экране</string>
+    <string-array name="pref_camera_view_position_titles">
+        <item>Слева</item>
+        <item>По центру</item>
+        <item>Справа</item>
+    </string-array>
+    <string-array name="pref_camera_view_position_values" translatable="false">
+        <item>left</item>
+        <item>center</item>
+        <item>right</item>
+    </string-array>
+
+    <string name="pref_name_usb_device_name">Адрес камеры</string>
+    <string name="pref_title_usb_device_name">Выберите USB устройство</string>
+
+    <string name="pref_name_camera_mirror">Зеркальное отображение</string>
+    <string name="pref_desc_camera_mirror">Отобразить по горизонтали картинку камеры</string>
+
 
     <!-- Parking Sensors settings -->
     <string name="pref_header_parkingsensors">Парковочные сенсоры</string>
@@ -101,18 +122,6 @@
 
     <string name="pref_name_units">Единицы измерения</string>
     <string name="pref_default_units">см</string>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     <!-- Example settings for Data & Sync -->

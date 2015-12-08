@@ -9,12 +9,11 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Surface;
+import android.view.TextureView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,7 +32,6 @@ public class CameraActivity extends Activity {
     private APP mAPP;
 
     private SharedPreferences _settings;
-    private FrameLayout mMainLayout;
     private RelativeLayout layoutParkingSensors;
 
     // for thread pool
@@ -42,7 +40,8 @@ public class CameraActivity extends Activity {
     private static final int KEEP_ALIVE_TIME = 10;		// time periods while keep the idle thread
     protected static final ThreadPoolExecutor EXECUTER
             = new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE, KEEP_ALIVE_TIME,
-            TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+                TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+
 
     // for accessing USB and USB camera
     private USBMonitor mUSBMonitor;
@@ -54,7 +53,8 @@ public class CameraActivity extends Activity {
 
     private ImageView carImageView;
     private ParkingSensorsView parkingSensorsView;
-
+    private UsbDevice mUsbDevice;
+    private String USBDeviceName;
 
     protected void onNewIntent(Intent intent) {
         if (intent.getBooleanExtra("suicide", false)) {
@@ -71,10 +71,16 @@ public class CameraActivity extends Activity {
         mAPP.setCameraActivity(this);
 
         _settings = PreferenceManager.getDefaultSharedPreferences(this);
+        USBDeviceName = _settings.getString("usb_device_name", "");
 
-        mUVCCameraView = (UVCCameraView)findViewById(R.id.UVCCameraView);
+
+        mUVCCameraView = (UVCCameraView) findViewById(R.id.camera_view);
         mUVCCameraView.setAspectRatio(
                 UVCCamera.DEFAULT_PREVIEW_WIDTH / (float) UVCCamera.DEFAULT_PREVIEW_HEIGHT);
+        mUVCCameraView.setSurfaceTextureListener(mSurfaceTextureListener);
+
+        mUSBMonitor = new USBMonitor(this, mOnDeviceConnectListener);
+
 
         layoutParkingSensors = (RelativeLayout) findViewById(R.id.parking_sensors_layout);
         parkingSensorsView = (ParkingSensorsView) findViewById(R.id.parkingSensors);
@@ -83,21 +89,19 @@ public class CameraActivity extends Activity {
         mAPP.setFrontTextView((TextViewCircle) findViewById(R.id.frontTextView));
         mAPP.setRearTextView((TextViewCircle) findViewById(R.id.rearTextView));
 
-        mUSBMonitor = new USBMonitor(this, mOnDeviceConnectListener);
-        mUSBMonitor.register();
-
         Iterator<UsbDevice> deviceIterator = mUSBMonitor.getDevices();
         while (deviceIterator.hasNext()) {
             UsbDevice device = deviceIterator.next();
 
-            mUSBMonitor.requestPermission(device);
-            Log.d(TAG, device.getDeviceName() + " " + mUSBMonitor.hasPermission(device));
-//            if (mAPP.DEBUG) {
-//                Log.d(TAG, device.getDeviceName() + " " + mUSBMonitor.hasPermission(device));
-//            }
+            if (USBDeviceName.isEmpty() || device.getDeviceName().equals(USBDeviceName)) {
+                mUsbDevice = device;
+                mUSBMonitor.requestPermission(mUsbDevice);
+                break;
+            }
+//            Log.d(TAG, device.getDeviceName() + " " + mUSBMonitor.hasPermission(device));
         }
 
-        mMainLayout = (FrameLayout)findViewById(R.id.main_layout);
+        FrameLayout mMainLayout = (FrameLayout)findViewById(R.id.main_layout);
         mMainLayout.setOnLongClickListener(new View.OnLongClickListener() {
 
             @Override
@@ -110,6 +114,26 @@ public class CameraActivity extends Activity {
                 startActivity(settingsIntent);
 
                 return false;
+            }
+        });
+        mMainLayout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (mUVCCamera != null) {
+                    mUVCCamera.destroy();
+                    mUVCCamera = null;
+                }
+
+                Iterator<UsbDevice> deviceIterator = mUSBMonitor.getDevices();
+                while (deviceIterator.hasNext()) {
+                    UsbDevice device = deviceIterator.next();
+
+                    if (USBDeviceName.isEmpty() || device.getDeviceName().equals(USBDeviceName)) {
+                        mUSBMonitor.requestPermission(device);
+                        break;
+                    }
+                }
             }
         });
 
@@ -150,34 +174,53 @@ public class CameraActivity extends Activity {
         super.onResume();
 
         mUSBMonitor.register();
-        if (mUVCCamera != null) {
-            mUVCCamera.startPreview();
+
+        if (mUVCCameraView != null) {
+            boolean mirrored = _settings.getBoolean("camera_mirror", false);
+            mUVCCameraView.setScaleX(mirrored ? -1 : 1);
+
+            int cameraViewGravity = Gravity.START;
+            LinearLayout lo = (LinearLayout)findViewById(R.id.linear_layout);
+            View v = lo.getChildAt(1);
+
+            switch (_settings.getString("camera_view_position", "left")) {
+                case "left":
+
+//                    lo.removeViewAt(1);
+//                    lo.addView(mUVCCameraView, 0);
+                    break;
+
+                case "right":
+                    //cameraViewGravity = Gravity.END;
+
+//                    lo.removeViewAt(1);
+//                    lo.addView(v, 0);
+                    break;
+            }
+            ((LinearLayout.LayoutParams) mUVCCameraView.getLayoutParams()).gravity = cameraViewGravity;
         }
 
 
         if ( _settings.getBoolean("ps_enable", false) ) {
             layoutParkingSensors.setVisibility(RelativeLayout.VISIBLE);
 
-            String position = _settings.getString("ps_position", "left");
-            int gravityPosition = Gravity.START;
-
-            switch ( position ) {
-                case "left":
-                    gravityPosition = Gravity.START;
-                    break;
-                case "center":
-                    gravityPosition = Gravity.CENTER;
-                    Log.d(TAG, "center");
-                    break;
-                case "right":
-                    gravityPosition = Gravity.END;
-                    Log.d(TAG, "right");
-                    break;
-            }
-            ((FrameLayout.LayoutParams) layoutParkingSensors.getLayoutParams()).gravity = gravityPosition;
+//            String position = _settings.getString("ps_position", "left");
+//            int gravityPosition = Gravity.START;
+//
+//            switch ( position ) {
+//                case "left":
+//                    gravityPosition = Gravity.START;
+//                    break;
+//                case "center":
+//                    gravityPosition = Gravity.CENTER;
+//                    break;
+//                case "right":
+//                    gravityPosition = Gravity.END;
+//                    break;
+//            }
+//            ((LinearLayout.LayoutParams) layoutParkingSensors.getLayoutParams()).gravity = gravityPosition;
 
             DisplayMetrics metrics = this.getResources().getDisplayMetrics();
-            int width = metrics.widthPixels;
             int height = metrics.heightPixels;
             carImageView.getLayoutParams().height = height / 100 * _settings.getInt("car_height", 30);
 
@@ -186,14 +229,17 @@ public class CameraActivity extends Activity {
 
             int frontSensorsCount = _settings.getInt("car_front_sensors_count", 0),
                 rearSensorsCount = _settings.getInt("car_rear_sensors_count", 0);
+            String frontIndicatorPosition = _settings.getString("ps_front_indicator_position", "right"),
+                    rearIndicatorPosition = _settings.getString("ps_rear_indicator_position", "right");
+
             parkingSensorsView.setFrontSensorsCount(frontSensorsCount);
             mAPP.getFrontTextView().setVisibility(
-                    (frontSensorsCount == 0 || _settings.getString("ps_front_indicator_position", "left").equals("disabled"))
+                    (frontSensorsCount == 0 || frontIndicatorPosition.equals("disabled"))
                             ? View.GONE
                             : View.VISIBLE);
             parkingSensorsView.setRearSensorsCount(rearSensorsCount);
             mAPP.getRearTextView().setVisibility(
-                    (rearSensorsCount == 0 || _settings.getString("ps_rear_indicator_position", "left").equals("disabled"))
+                    (rearSensorsCount == 0 || rearIndicatorPosition.equals("disabled"))
                             ? View.GONE
                             : View.VISIBLE );
 
@@ -210,8 +256,7 @@ public class CameraActivity extends Activity {
             int margins = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                     Integer.parseInt(_settings.getString("ps_indicators_margin", "10")),
                     getResources().getDisplayMetrics());
-            String frontIndicatorPosition = _settings.getString("ps_front_indicator_position", "left"),
-                   rearIndicatorPosition = _settings.getString("ps_rear_indicator_position", "left");
+
 
 
             TextViewCircle ringView = mAPP.getRingView("rear");
@@ -250,6 +295,7 @@ public class CameraActivity extends Activity {
             layoutParkingSensors.setVisibility(RelativeLayout.GONE);
         }
 
+        USBDeviceName = _settings.getString("usb_device_name", "");
     }
 
     @Override
@@ -272,19 +318,23 @@ public class CameraActivity extends Activity {
             mUSBMonitor.destroy();
             mUSBMonitor = null;
         }
+
         mUVCCameraView = null;
 
         super.onDestroy();
     }
 
+    public USBMonitor getUSBMonitor() {
+        return mUSBMonitor;
+    }
+
     private final USBMonitor.OnDeviceConnectListener mOnDeviceConnectListener = new USBMonitor.OnDeviceConnectListener() {
         @Override
-        public void onAttach(final UsbDevice device) {}
+        public void onAttach(final UsbDevice device) {
+        }
 
         @Override
-        public void onConnect(final UsbDevice device,
-                              final USBMonitor.UsbControlBlock ctrlBlock,
-                              final boolean createNew) {
+        public void onConnect(final UsbDevice device, final USBMonitor.UsbControlBlock ctrlBlock, final boolean createNew) {
             if (mUVCCamera != null) {
                 mUVCCamera.destroy();
             }
@@ -293,24 +343,17 @@ public class CameraActivity extends Activity {
                 @Override
                 public void run() {
                     mUVCCamera.open(ctrlBlock);
-//					mUVCCamera.setPreviewTexture(mUVCCameraView.getSurfaceTexture());
+                    //if (DEBUG) Log.i(TAG, "supportedSize:" + mUVCCamera.getSupportedSize());
                     if (mPreviewSurface != null) {
                         mPreviewSurface.release();
                         mPreviewSurface = null;
                     }
-
                     try {
-                        mUVCCamera.setPreviewSize(
-                                UVCCamera.DEFAULT_PREVIEW_WIDTH,
-                                UVCCamera.DEFAULT_PREVIEW_HEIGHT,
-                                UVCCamera.FRAME_FORMAT_MJPEG);
+                        mUVCCamera.setPreviewSize(UVCCamera.DEFAULT_PREVIEW_WIDTH, UVCCamera.DEFAULT_PREVIEW_HEIGHT, UVCCamera.FRAME_FORMAT_MJPEG);
                     } catch (final IllegalArgumentException e) {
-                        // fallback to YUV mode
                         try {
-                            mUVCCamera.setPreviewSize(
-                                    UVCCamera.DEFAULT_PREVIEW_WIDTH,
-                                    UVCCamera.DEFAULT_PREVIEW_HEIGHT,
-                                    UVCCamera.DEFAULT_PREVIEW_MODE);
+                            // fallback to YUV mode
+                            mUVCCamera.setPreviewSize(UVCCamera.DEFAULT_PREVIEW_WIDTH, UVCCamera.DEFAULT_PREVIEW_HEIGHT, UVCCamera.DEFAULT_PREVIEW_MODE);
                         } catch (final IllegalArgumentException e1) {
                             mUVCCamera.destroy();
                             mUVCCamera = null;
@@ -329,8 +372,7 @@ public class CameraActivity extends Activity {
         }
 
         @Override
-        public void onDisconnect(final UsbDevice device,
-                                 final USBMonitor.UsbControlBlock ctrlBlock) {
+        public void onDisconnect(final UsbDevice device, final USBMonitor.UsbControlBlock ctrlBlock) {
             // XXX you should check whether the comming device equal to camera device that currently using
             if (mUVCCamera != null) {
                 mUVCCamera.close();
@@ -342,9 +384,53 @@ public class CameraActivity extends Activity {
         }
 
         @Override
-        public void onDettach(final UsbDevice device) {}
+        public void onDettach(final UsbDevice device) { }
 
         @Override
-        public void onCancel() {}
+        public void onCancel() { }
+    };
+
+
+    private final TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
+
+        @Override
+        public void onSurfaceTextureAvailable(final SurfaceTexture surface, final int width, final int height) {
+            if (mUVCCamera != null) {
+                mUVCCamera.destroy();
+                mUVCCamera = null;
+            }
+
+            if (mUsbDevice != null && mUSBMonitor != null) {
+                mUSBMonitor.requestPermission(mUsbDevice);
+            }
+
+//            Iterator<UsbDevice> deviceIterator = mUSBMonitor.getDevices();
+//            while (deviceIterator.hasNext()) {
+//                UsbDevice device = deviceIterator.next();
+//
+//                if (USBDeviceName.isEmpty() || device.getDeviceName().equals(USBDeviceName)) {
+//                    mUSBMonitor.requestPermission(device);
+//                    break;
+//                }
+//            }
+        }
+
+        @Override
+        public void onSurfaceTextureSizeChanged(final SurfaceTexture surface, final int width, final int height) {
+        }
+
+        @Override
+        public boolean onSurfaceTextureDestroyed(final SurfaceTexture surface) {
+            if (mPreviewSurface != null) {
+                mPreviewSurface.release();
+                mPreviewSurface = null;
+            }
+            return true;
+        }
+
+        @Override
+        public void onSurfaceTextureUpdated(final SurfaceTexture surface) {
+
+        }
     };
 }

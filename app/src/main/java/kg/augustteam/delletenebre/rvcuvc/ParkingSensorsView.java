@@ -55,8 +55,6 @@ public class ParkingSensorsView extends View {
 
     private String emptyDistanseText;
     private int[] rearSensorsData, frontSensorsData;
-    private String rearInputString = "-1,-1,-1,-1";
-    private String frontInputString = "120,220";
 
     public ParkingSensorsView(Context context) {
         super(context);
@@ -86,8 +84,8 @@ public class ParkingSensorsView extends View {
 
         mRectF = new RectF();
 
-        rearSensorsData = stringToIntArray(rearInputString);
-        frontSensorsData = stringToIntArray(frontInputString);
+        rearSensorsData = stringToIntArray("-1,-1,-1,-1");
+        frontSensorsData = stringToIntArray("120,220");
 
         setUnits("см");
 
@@ -200,28 +198,28 @@ public class ParkingSensorsView extends View {
 
             if (ringView != null) {
                 ringView.setRingColorAnimated(dataColor);
-                ringView.setText(TextUtils.concat(textDistanceSpan, "\n", unitsSpan));
-                //            String currentString = String.valueOf(ringView.getText());
-                //            String[] separated = currentString.split("\n");
-                //
+//                ringView.setText(TextUtils.concat(textDistanceSpan, "\n", unitsSpan));
+                String currentString = String.valueOf(ringView.getText());
+                String[] separated = currentString.split("\n");
 
-                //            if (separated[0].equals(emptyDistanseText) || min < 0) {
-                //                ringView.setText(TextUtils.concat(textDistanceSpan, "\n", unitsSpan));
-                //            } else {
-                //
-                //                ValueAnimator animator = new ValueAnimator();
-                //                animator.setObjectValues(Integer.parseInt(separated[0]), min);
-                //                animator.setDuration(200);
-                //                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                //                    public void onAnimationUpdate(ValueAnimator animation) {
-                //                        String textDistance = String.valueOf(animation.getAnimatedValue());
-                //                        SpannableString textDistanceSpan = new SpannableString(textDistance);
-                //                        textDistanceSpan.setSpan(new StyleSpan(Typeface.BOLD), 0, textDistance.length(), 0);
-                //                        ringView.setText(TextUtils.concat(textDistanceSpan, "\n", unitsSpan));
-                //                    }
-                //                });
-                //                animator.start();
-                //            }
+
+                if (separated[0].equals(emptyDistanseText) || min < 0) {
+                    ringView.setText(TextUtils.concat(textDistanceSpan, "\n", unitsSpan));
+                } else {
+
+                    ValueAnimator animator = new ValueAnimator();
+                    animator.setObjectValues(Integer.parseInt(separated[0]), min);
+                    animator.setDuration(200);
+                    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            String textDistance = String.valueOf(animation.getAnimatedValue());
+                            SpannableString textDistanceSpan = new SpannableString(textDistance);
+                            textDistanceSpan.setSpan(new StyleSpan(Typeface.BOLD), 0, textDistance.length(), 0);
+                            ringView.setText(TextUtils.concat(textDistanceSpan, "\n", unitsSpan));
+                        }
+                    });
+                    animator.start();
+                }
             }
 
             mPaint.setColor(dataColor);

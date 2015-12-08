@@ -49,19 +49,47 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="@string/pref_header_camera">
+
+        <ListPreference
+            android:key="camera_view_position"
+            android:title="@string/pref_name_camera_view_position"
+            android:defaultValue="left"
+            android:entries="@array/pref_camera_view_position_titles"
+            android:entryValues="@array/pref_camera_view_position_values"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null" />
+
+        <ListPreference
+            android:key="usb_device_name"
+            android:title="@string/pref_name_usb_device_name"
+            android:dialogTitle="@string/pref_title_usb_device_name"
+            android:defaultValue=""
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"/>
+
+        <SwitchPreference
+            android:key="camera_mirror"
+            android:title="@string/pref_name_camera_mirror"
+            android:summary="@string/pref_desc_camera_mirror"
+            android:defaultValue="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/pref_header_parkingsensors">
 
         <SwitchPreference
             android:key="ps_enable"
             android:title="@string/pref_name_ps_enable"
             android:summary="@string/pref_desc_ps_enable"
-            android:defaultValue="true" />
+            android:defaultValue="false" />
 
         <ListPreference
             android:key="ps_position"
             android:dependency="ps_enable"
             android:title="@string/pref_name_ps_position"
-            android:defaultValue="left"
+            android:defaultValue="right"
             android:entries="@array/pref_ps_position_titles"
             android:entryValues="@array/pref_ps_position_values"
             android:negativeButtonText="@null"
@@ -80,7 +108,7 @@
             android:key="ps_front_indicator_position"
             android:dependency="ps_enable"
             android:title="@string/pref_name_ps_front_indicator_position"
-            android:defaultValue="left"
+            android:defaultValue="right"
             android:entries="@array/pref_ps_front_indicator_position_titles"
             android:entryValues="@array/pref_ps_front_indicator_position_values"
             android:negativeButtonText="@null"
@@ -98,7 +126,7 @@
             android:key="ps_rear_indicator_position"
             android:dependency="ps_enable"
             android:title="@string/pref_name_ps_rear_indicator_position"
-            android:defaultValue="left"
+            android:defaultValue="right"
             android:entries="@array/pref_ps_rear_indicator_position_titles"
             android:entryValues="@array/pref_ps_rear_indicator_position_values"
             android:negativeButtonText="@null"

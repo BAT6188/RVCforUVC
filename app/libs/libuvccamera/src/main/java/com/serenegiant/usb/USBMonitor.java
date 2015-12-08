@@ -46,7 +46,7 @@ import android.util.SparseArray;
 
 public final class USBMonitor {
 
-	private static final boolean DEBUG = true;	// TODO set false on production
+	private static final boolean DEBUG = false;	// TODO set false on production
 	private static final String TAG = "USBMonitor";
 
 	private static final String ACTION_USB_PERMISSION_BASE = "com.serenegiant.USB_PERMISSION.";
@@ -134,7 +134,7 @@ public final class USBMonitor {
 				context.registerReceiver(mUsbReceiver, filter);
 			}
 			mDeviceCounts = 0;
-			mHandler.postDelayed(mDeviceCheckRunnable, 1000);
+			//mHandler.postDelayed(mDeviceCheckRunnable, 1000);
 		}
 	}
 
@@ -279,7 +279,7 @@ public final class USBMonitor {
 	 * @return
 	 */
 	public boolean hasPermission(final UsbDevice device) {
-		return mUsbManager.hasPermission(device);
+		return device != null && mUsbManager.hasPermission(device);
 	}
 
 	/**
@@ -357,7 +357,7 @@ public final class USBMonitor {
 		}
 	};
 
-	private final void processConnect(final UsbDevice device) {
+	public final void processConnect(final UsbDevice device) {
 		if (DEBUG) Log.v(TAG, "processConnect:");
 		mHandler.post(new Runnable() {
 			@Override

@@ -5,6 +5,8 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -19,12 +21,19 @@ import android.preference.RingtonePreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
+import com.serenegiant.usb.USBMonitor;
+
+import java.util.HashMap;
 import java.util.List;
 
 public class SettingsActivity extends PreferenceActivity {
+
+    private static UsbManager mUsbManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mUsbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
     }
 
     @Override
@@ -91,6 +100,37 @@ public class SettingsActivity extends PreferenceActivity {
                         .getString(preference.getKey(), ""));
     }
 
+    private static void bindPreferenceSummaryToValueUSB(ListPreference preference) {
+        if ( mUsbManager != null ) {
+            HashMap<String, UsbDevice> connectedUsbDevices = mUsbManager.getDeviceList();
+            String[] entryValues = new String[connectedUsbDevices.size() + 1];
+            String[] entries = new String[connectedUsbDevices.size() + 1];
+
+            entries[0] = "Auto";
+            entryValues[0] = "";
+
+            int i = 1;
+            for (String name : connectedUsbDevices.keySet()) {
+                UsbDevice device = connectedUsbDevices.get(name);
+                entries[i] = device.getDeviceName();
+                entryValues[i] = device.getDeviceName();
+                i++;
+            }
+
+            preference.setEntries(entries);
+            preference.setEntryValues(entryValues);
+        }
+
+
+
+        preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
+
+        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
+                PreferenceManager
+                        .getDefaultSharedPreferences(preference.getContext())
+                        .getString(preference.getKey(), ""));
+    }
+
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName)
@@ -108,6 +148,8 @@ public class SettingsActivity extends PreferenceActivity {
 
             bindPreferenceSummaryToValue(findPreference("example_text"));
             bindPreferenceSummaryToValue(findPreference("fullscreen"));
+            bindPreferenceSummaryToValue(findPreference("camera_view_position"));
+            bindPreferenceSummaryToValueUSB((ListPreference) findPreference("usb_device_name"));
             bindPreferenceSummaryToValue(findPreference("ps_front_indicator_position"));
             bindPreferenceSummaryToValue(findPreference("ps_rear_indicator_position"));
             bindPreferenceSummaryToValue(findPreference("ps_indicators_margin"));
