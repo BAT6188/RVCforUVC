@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Surface;
@@ -17,7 +16,6 @@ import android.view.TextureView;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.serenegiant.usb.USBMonitor;
@@ -78,8 +76,7 @@ public class CameraActivity extends Activity {
 
 
         mUVCCameraView = (UVCCameraView) findViewById(R.id.camera_view);
-        mUVCCameraView.setAspectRatio(
-                UVCCamera.DEFAULT_PREVIEW_WIDTH / (float) UVCCamera.DEFAULT_PREVIEW_HEIGHT);
+
         mUVCCameraView.setSurfaceTextureListener(mSurfaceTextureListener);
 
         mUSBMonitor = new USBMonitor(this, mOnDeviceConnectListener);
@@ -178,7 +175,16 @@ public class CameraActivity extends Activity {
 
         mUSBMonitor.register();
 
+        DisplayMetrics metrics = this.getResources().getDisplayMetrics();
+
         if (mUVCCameraView != null) {
+
+
+
+
+
+
+
             boolean mirrored = _settings.getBoolean("camera_mirror", false);
             mUVCCameraView.setScaleX(mirrored ? -1 : 1);
 
@@ -201,7 +207,7 @@ public class CameraActivity extends Activity {
 
         if ( _settings.getBoolean("ps_enable", false) ) {
             layoutParkingSensors.setVisibility(RelativeLayout.VISIBLE);
-            DisplayMetrics metrics = this.getResources().getDisplayMetrics();
+
 
             int cameraPercentageWidth = _settings.getInt("camera_width", 70);
 
@@ -303,8 +309,16 @@ public class CameraActivity extends Activity {
 
         } else {
             layoutParkingSensors.setVisibility(RelativeLayout.GONE);
-            mUVCCameraView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+            mUVCCameraView.getLayoutParams().width = metrics.widthPixels;
+            mUVCCameraView.getLayoutParams().height = metrics.heightPixels;
         }
+
+        boolean isKeepAspectRatio = _settings.getBoolean("camera_keep_aspect_ratio", true);
+
+        mUVCCameraView.setAspectRatio(
+                ( isKeepAspectRatio )
+                ? UVCCamera.DEFAULT_PREVIEW_WIDTH / (float) UVCCamera.DEFAULT_PREVIEW_HEIGHT
+                : mUVCCameraView.getLayoutParams().width / (float) metrics.heightPixels);
 
         USBDeviceName = _settings.getString("usb_device_name", "");
     }

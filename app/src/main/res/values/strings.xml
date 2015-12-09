@@ -57,8 +57,11 @@
     <string name="pref_name_usb_device_name">Адрес камеры</string>
     <string name="pref_title_usb_device_name">Выберите USB устройство</string>
 
+    <string name="pref_name_camera_keep_aspect_ratio">Сохранять пропорции видео</string>
+    <string name="pref_desc_camera_keep_aspect_ratio">Если включено, то изображение будет пропорционально масштабировано</string>
+
     <string name="pref_name_camera_mirror">Зеркальное отображение</string>
-    <string name="pref_desc_camera_mirror">Отобразить по горизонтали картинку камеры</string>
+    <string name="pref_desc_camera_mirror">Отобразить по горизонтали "картику" с камеры</string>
 
     <string name="pref_name_camera_width">Ширина области камеры</string>
     <string name="pref_desc_camera_width">Укажите ширину области камеры, оставшаяся часть будет использована для отображения данных парковочных сенсоров</string>
@@ -105,6 +108,12 @@
 
     <string name="pref_name_ps_indicators_margin">Отступ числовых индикаторов (в dp)</string>
     <string name="pref_default_ps_indicators_margin">10</string>
+
+    <string name="pref_name_car_height">Размер (высота) автомобиля (в % от высоты экрана)</string>
+    <string name="pref_desc_car_height"></string>
+
+    <string name="pref_name_car_font_size">Размер шрифта числовых индикаторов (в sp)</string>
+    <string name="pref_desc_car_font_size"></string>
 
 
     <string name="pref_name_ps_min">Минимальное определяемое расстояние сенсора</string>

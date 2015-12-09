@@ -21,8 +21,6 @@ import android.preference.RingtonePreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
-import com.serenegiant.usb.USBMonitor;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -146,7 +144,6 @@ public class SettingsActivity extends PreferenceActivity {
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
 
-            bindPreferenceSummaryToValue(findPreference("example_text"));
             bindPreferenceSummaryToValue(findPreference("fullscreen"));
             bindPreferenceSummaryToValue(findPreference("camera_view_position"));
             bindPreferenceSummaryToValueUSB((ListPreference) findPreference("usb_device_name"));
